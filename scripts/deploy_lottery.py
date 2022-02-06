@@ -3,7 +3,7 @@ from scripts.utils import get_account, get_contract
 
 
 def deploy_lottery():
-    account = get_account(id="freecodecamp-account")
+    account = get_account()
     lottery = Lottery.deploy(
         get_contract("eth_usd_price_feed").address,
         get_contract("vrf_coordinator").address,
@@ -16,5 +16,14 @@ def deploy_lottery():
     print("Deployed lottery!")
 
 
+def start_lottery():
+    account = get_account()
+    lottery = Lottery[-1]
+    starting_tx = lottery.startLottery({"from": account})
+    starting_tx.wait(1)
+    print("Lottery started!")
+
+
 def main():
     deploy_lottery()
+    start_lottery()
